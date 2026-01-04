@@ -5,48 +5,50 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
 
-  async function send() {
-    if (!input.trim()) return;
+   async function send() {
+  if (!input.trim()) return;
 
-    const userMsg = { from: "user", text: input };
-    setMessages((prev) => [...prev, userMsg]);
-    setTyping(true);
+  const userMsg = { from: "user", text: input };
+  setMessages((prev) => [...prev, userMsg]);
+  setTyping(true);
 
-    try {
-      const API_URL = "https://encode-health-ai-production.up.railway.app/ask";
+  try {
+    const response = await fetch(
+      "https://encode-health-ai-production.up.railway.app/ask",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: input, // ✅ THIS IS THE FIX
+        }),
+      }
+    );
 
-const response = await fetch(API_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    text: setInput,
-  }),
-});
+    const data = await response.json();
 
-const data = await response.json();
+    const blocks = data.answer
+      .split("\n\n")
+      .filter((b) => b.trim() !== "");
 
-      const blocks = data.answer
-        .split("\n\n")
-        .filter((b) => b.trim() !== "");
+    const aiMsg = {
+      from: "ai",
+      blocks,
+    };
 
-      const aiMsg = {
-        from: "ai",
-        blocks: blocks,
-      };
-
-      setMessages((prev) => [...prev, aiMsg]);
-    } catch  {
-      setMessages((prev) => [
-        ...prev,
-        { from: "ai", blocks: ["Something went wrong. Please try again."] },
-      ]);
-    }
-
-    setTyping(false);
-    setInput("");
+    setMessages((prev) => [...prev, aiMsg]);
+  // eslint-disable-next-line no-unused-vars
+  } catch (err) {
+    setMessages((prev) => [
+      ...prev,
+      { from: "ai", blocks: ["Something went wrong. Please try again."] },
+    ]);
   }
+
+  setTyping(false);
+  setInput("");
+}
 
   return (
     <div style={styles.chat}>
