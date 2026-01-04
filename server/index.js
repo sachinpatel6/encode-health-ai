@@ -7,16 +7,28 @@ dotenv.config();
 
 const app = express();
 
+
 import cors from "cors";
 
 app.use(cors({
-  origin: [
-    "https://encode-health-ai.vercel.app",
-    "https://encode-health-ai.vercel.app/"
-  ],
-  methods: ["GET", "POST"],
+  origin: "*",
+  methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
 }));
+
+app.options("*", cors());
+
+
+// import cors from "cors";
+
+// app.use(cors({
+//   origin: [
+//     "https://encode-health-ai.vercel.app",
+//     "https://encode-health-ai.vercel.app/"
+//   ],
+//   methods: ["GET", "POST"],
+//   allowedHeaders: ["Content-Type"]
+// }));
 
 // app.use(cors());
 app.use(express.json());
