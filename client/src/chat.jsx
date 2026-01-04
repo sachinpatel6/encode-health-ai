@@ -13,7 +13,7 @@ export default function Chat() {
     setTyping(true);
 
     try {
-      const res = await fetch("http://localhost:5000/ask", {
+      const res = await fetch("https://encode-health-ai-production.up.railway.app/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: input }),
