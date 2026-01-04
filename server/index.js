@@ -6,7 +6,19 @@ import fetch from "node-fetch";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+import cors from "cors";
+
+app.use(cors({
+  origin: [
+    "https://encode-health-ai.vercel.app",
+    "https://encode-health-ai.vercel.app/"
+  ],
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
+
+// app.use(cors());
 app.use(express.json());
 
 app.post("/ask", async (req, res) => {
