@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 
-import cors from "cors";
+// import cors from "process.env.PORT";
 
 app.use(cors({
   origin: "*",
@@ -17,20 +17,6 @@ app.use(cors({
 }));
 
 app.options("*", cors());
-
-
-// import cors from "cors";
-
-// app.use(cors({
-//   origin: [
-//     "https://encode-health-ai.vercel.app",
-//     "https://encode-health-ai.vercel.app/"
-//   ],
-//   methods: ["GET", "POST"],
-//   allowedHeaders: ["Content-Type"]
-// }));
-
-// app.use(cors());
 app.use(express.json());
 
 app.post("/ask", async (req, res) => {
@@ -80,6 +66,7 @@ app.post("/ask", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("✅ Server running at http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });
