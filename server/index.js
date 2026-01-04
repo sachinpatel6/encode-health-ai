@@ -1,27 +1,30 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import fetch from "node-fetch";
 
 dotenv.config();
 
 const app = express();
 
-
-import cors from "process.env.PORT";
-
+/* ✅ CORS */
 app.use(cors({
   origin: "*",
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
 }));
 
-app.options("*", cors());
 app.use(express.json());
 
+/* ✅ HEALTH CHECK (IMPORTANT) */
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
+
+/* ✅ AI API */
 app.post("/ask", async (req, res) => {
   try {
-    const text = req.body.text;
+    const { text } = req.body;
+
     if (!text) {
       return res.json({ answer: "❌ No input received" });
     }
@@ -44,29 +47,31 @@ app.post("/ask", async (req, res) => {
             },
             {
               role: "user",
-              content: text,
-            },
-          ],
-        }),
+              content: text
+            }
+          ]
+        })
       }
     );
 
     const data = await response.json();
-
-    console.log("🧠 RAW AI RESPONSE:", JSON.stringify(data, null, 2));
 
     const answer =
       data?.choices?.[0]?.message?.content ||
       "⚠️ AI returned no response";
 
     res.json({ answer });
+
   } catch (err) {
     console.error("🔥 Backend crash:", err);
-    res.json({ answer: "❌ Backend error. Check server logs." });
+    res.status(500).json({
+      answer: "❌ Backend error. Check server logs."
+    });
   }
 });
 
+/* ✅ RAILWAY PORT */
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
