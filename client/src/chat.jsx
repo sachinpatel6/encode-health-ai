@@ -13,13 +13,19 @@ export default function Chat() {
     setTyping(true);
 
     try {
-      const res = await fetch("https://encode-health-ai-production.up.railway.app/ask", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: input }),
-      });
+      const API_URL = "https://encode-health-ai-production.up.railway.app/ask";
 
-      const data = await res.json();
+const response = await fetch(API_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    text: setInput,
+  }),
+});
+
+const data = await response.json();
 
       const blocks = data.answer
         .split("\n\n")
