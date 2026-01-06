@@ -26,20 +26,20 @@ The application is built with a React (Vite) frontend and a Node.js + Express ba
 - Groq (LLaMA)
 
 
-## 📁 Project Structure
+##  Project Structure
 
 
-## ⚙️ Environment Variables
+##  Environment Variables
 Create a `.env` file inside the `server` folder using the example below:
 
 
-> ⚠️ **Note:**  
+>  **Note:**  
 > The `.env` file is intentionally not included in the repository for security reasons.
 
 
-## ▶️ How to Run the Project Locally
+##  How to Run the Project Locally
 
-### 1️⃣ Clone the repository
+###  Clone the repository
 ```bash
 git clone <your-repo-link>
 cd encode-health-ai
